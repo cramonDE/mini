@@ -129,6 +129,17 @@ public class VideoInputActivity extends Activity {
             addFragment(loginFragment);
         }
         initialize();
+
+        final FragmentManager manager = getFragmentManager();
+        manager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+
+            @Override
+            public void onBackStackChanged() {
+                for(int entry = 0; entry < manager.getBackStackEntryCount(); entry++){
+                    Log.i("manager", "Found fragment: " + manager.getBackStackEntryAt(entry).getName());
+                }
+            }
+        });
     }
 
 
