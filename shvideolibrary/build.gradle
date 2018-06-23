@@ -44,5 +44,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
+    implementation files('libs/mid-sdk-2.10.jar')
+    implementation files('libs/mta-sdk-2.0.0.jar')
+    implementation files('libs/open_sdk_r5988.jar')
 }
