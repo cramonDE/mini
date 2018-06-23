@@ -51,7 +51,8 @@
         android:textColor="@color/coundownColor"
         android:textStyle="bold"
         android:fontFamily="@font/marker_felt_thin"
-        android:layout_marginTop="35dp" />
+        android:layout_marginTop="35dp"
+        android:visibility="invisible"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

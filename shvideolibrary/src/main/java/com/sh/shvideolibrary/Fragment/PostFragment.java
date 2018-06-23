@@ -1,8 +1,8 @@
 package com.sh.shvideolibrary.Fragment;
 
 
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +12,6 @@ import com.sh.shvideolibrary.R;
 import com.sh.shvideolibrary.VideoInputActivity;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,9 +41,9 @@ public class PostFragment extends Fragment {
     }
 
     public void post(){
-        main.removeFragment(main.postFragment);
-        main.addFragment(main.followFragment);
-//        main.replaceFragment(main.followFragment);
+//        main.removeFragment(main.postFragment);
+//        main.addFragment(main.followFragment);
+        main.replaceFragment(main.followFragment);
     }
 
 }

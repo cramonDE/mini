@@ -1,9 +1,7 @@
 package com.sh.shvideolibrary.Fragment;
 
-import android.content.Context;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,20 +15,15 @@ import android.widget.TextView;
 import com.sh.shvideolibrary.R;
 import com.sh.shvideolibrary.VideoInputActivity;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static android.content.ContentValues.TAG;
 
 public class ReadyFragment extends Fragment {
     VideoInputActivity main;
 
-//    @BindView(R.id.ibt_start)
     ImageButton startBtn;
-//    @BindView(R.id.music)
     RelativeLayout music;
-//    @BindView(R.id.tv_music)
     TextView musicTV;
 
     String musicChosen = "音乐";

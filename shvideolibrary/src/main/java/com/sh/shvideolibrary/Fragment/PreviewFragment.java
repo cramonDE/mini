@@ -1,9 +1,7 @@
 package com.sh.shvideolibrary.Fragment;
 
-import android.content.Context;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,6 @@ import com.sh.shvideolibrary.R;
 import com.sh.shvideolibrary.VideoInputActivity;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class PreviewFragment extends Fragment {
     VideoInputActivity main;
@@ -46,12 +43,14 @@ public class PreviewFragment extends Fragment {
     }
 
     public void cancel(){
-        main.removeFragment(main.previewFragment);
-        main.addFragment(main.readyFragment);
+//        main.removeFragment(main.previewFragment);
+//        main.addFragment(main.readyFragment);
+        main.replaceFragment(main.previewFragment);
     }
 
     public void post(){
-        main.removeFragment(main.previewFragment);
-        main.addFragment(main.postFragment);
+//        main.removeFragment(main.previewFragment);
+//        main.addFragment(main.postFragment);
+        main.replaceFragment(main.postFragment);
     }
 }
