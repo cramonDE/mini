@@ -52,17 +52,20 @@ public class GamingFragment extends Fragment {
     private AlphaAnimation fadeIn;          // 文字淡入效果
     private Animation scaleAnim ;           // 放大效果
     private int positionNum;                // 位置（竖直通道）的数量
-    private float deviceWidth;                // 所用设备宽度
-    private float deviceHeight;               // 所用设备高度
+    private float deviceWidth;              // 所用设备宽度
+    private float deviceHeight;             // 所用设备高度
+    private int comboNum = 0;                   // combo个数
 
     private Animation[] animations = new Animation[4];
     Button countdownBtn;
     ProgressBar progress;
-    ImageView line;
     TextView countdown;
     ImageView backBtn;
+    ImageView rec;
     TextView tv_gamecountdown;
     RelativeLayout gamingLayout;
+    TextView combo;
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -70,11 +73,12 @@ public class GamingFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_gaming, container, false);
         countdownBtn = (Button) view.findViewById(R.id.btn_countdown);
         progress = (ProgressBar) view.findViewById(R.id.progressBar);
-        line = (ImageView) view.findViewById(R.id.imageView_line);
         countdown = (TextView) view.findViewById(R.id.tv_countdown);
         backBtn = (ImageView) view.findViewById(R.id.ibt_back);
         tv_gamecountdown = (TextView) view.findViewById(R.id.tv_gamecountdown);
         gamingLayout = (RelativeLayout) view.findViewById(R.id.layout_gaming);
+        combo = (TextView)view.findViewById(R.id.tv_combo);
+        rec = (ImageView) view.findViewById(R.id.imageView_rec);
 
         //Bind view
         ButterKnife.bind(this, view);
@@ -174,6 +178,7 @@ public class GamingFragment extends Fragment {
                 int i = (int)Math.floor(Math.random() * 4.0);
                 int j = (int)Math.floor(Math.random() * (float)positionNum);
                 dropEmoji(i,j);
+                addComboNum();
             }
 
             @Override
@@ -184,7 +189,6 @@ public class GamingFragment extends Fragment {
 
         // 开始游戏倒计时
         countDownTimer.start();
-
     }
 
     /**
@@ -192,7 +196,7 @@ public class GamingFragment extends Fragment {
      */
     public void startGame() {
         //中线、进度条可见、返回按钮不可见
-        line.setVisibility(View.VISIBLE);
+        rec.setVisibility(View.VISIBLE);
         progress.setVisibility(View.VISIBLE);
         countdown.setVisibility(View.INVISIBLE);
         backBtn.setVisibility(View.INVISIBLE);
@@ -215,7 +219,6 @@ public class GamingFragment extends Fragment {
         emoji.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         gamingLayout.addView(emoji);
-//        emoji.setVisibility(View.INVISIBLE);
         return emoji;
     }
 
@@ -238,9 +241,21 @@ public class GamingFragment extends Fragment {
     }
 
     /**
+     * 增加combo数
+     */
+    public void addComboNum(){
+
+        combo.setText(this.comboNum++ +" Combo");
+
+        if(this.comboNum ==1){
+            combo.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
      * 在屏幕上特定位置加入特定的emoji下落效果
      * @param emojiIndex emoji编号：0-3
-     * @param positionIndex 位置编号：0-3
+     * @param positionIndex 位置编号
      */
     public void dropEmoji(int emojiIndex, int positionIndex){
         // get emoji
