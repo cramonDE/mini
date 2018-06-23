@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/imageView_login"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:src="@drawable/login2x"
+        />
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="登录FaceDown"-->
+    <!--android:textSize="9pt"-->
+    <!--android:textColor="@color/textcolor"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:gravity="center"-->
+    <!--android:layout_marginTop="120dp"/>-->
+
+    <ImageButton
+        android:id="@+id/ibt_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="180dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/imageView_login"
+        android:background="@drawable/qq" />
+</RelativeLayout>

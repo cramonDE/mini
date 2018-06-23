@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="coundownColor">#f3e02c</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="gray_background">#999999</color>
+    <color name="textcolor">#111</color>
+    <color name="musicBackground">#16112d</color>
+    <color name="white">#ffffff</color>
+    <color name="red">#d70f72</color>
+    <color name="home_inactive">#908d9c</color>
+    <color name="grey_purple">#211b38</color>
+    <color name="panel_black">#25272A</color>
+    <color name="text_blue1">#1173CB</color>
+</resources>

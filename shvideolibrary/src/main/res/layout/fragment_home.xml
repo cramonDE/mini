@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/home_page"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/home2x">
+
+        <com.gigamole.navigationtabstrip.NavigationTabStrip
+            android:id="@+id/home_tab"
+            app:nts_active_color="@color/white"
+            app:nts_animation_duration="150"
+            app:nts_color="#fff"
+            app:nts_corners_radius="1.5dp"
+            app:nts_factor="0.5"
+            app:nts_gravity="bottom"
+            app:nts_inactive_color="@color/home_inactive"
+            app:nts_size="15sp"
+            app:nts_titles="@array/home_tabs"
+            app:nts_type="line"
+            app:nts_weight="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="275dp"
+            android:background="@color/grey_purple" />
+        <!--app:nts_typeface="fonts/typeface.otf"-->
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/home_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/home_tab"
+            android:paddingTop="10dp"
+            android:background="@color/grey_purple">
+
+            <GridLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alignmentMode="alignBounds"
+                android:columnCount="3">
+
+                <RelativeLayout
+                    android:id="@+id/music_1"
+                    android:tag="First Music"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:layout_columnWeight="1"
+                    android:background="@drawable/music4">
+
+
+                    <ImageButton
+                        android:id="@+id/delete1"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/delete"
+                        android:layout_marginTop="80dp" />
+
+                    <ImageButton
+                        android:id="@+id/download1"
+                        android:layout_toEndOf="@id/delete1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="80dp"
+                        android:background="@drawable/download" />
+
+
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/music_2"
+                    android:tag="我们的光芒"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_columnWeight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:background="@drawable/music2">
+
+                    <ImageButton
+                        android:id="@+id/delete2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/delete"
+                        android:layout_marginTop="80dp" />
+
+                    <ImageButton
+                        android:id="@+id/download2"
+                        android:layout_toEndOf="@id/delete2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="80dp"
+                        android:background="@drawable/download" />
+
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/music_3"
+                    android:tag="叫什么好呢"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:background="@drawable/music3">
+
+                    <ImageButton
+                        android:id="@+id/delete3"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/delete"
+                        android:layout_marginTop="80dp" />
+
+                    <ImageButton
+                        android:id="@+id/download3"
+                        android:layout_toEndOf="@id/delete3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="80dp"
+                        android:background="@drawable/download" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/music_4"
+                    android:tag="最后一个"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_columnWeight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:background="@drawable/music4">
+
+                    <ImageButton
+                        android:id="@+id/delete4"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/delete"
+                        android:layout_marginTop="80dp" />
+
+                    <ImageButton
+                        android:id="@+id/download4"
+                        android:layout_toEndOf="@id/delete4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="80dp"
+                        android:background="@drawable/download" />
+
+                </RelativeLayout>
+
+
+            </GridLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+</LinearLayout>
