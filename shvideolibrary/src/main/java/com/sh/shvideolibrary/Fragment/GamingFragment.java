@@ -166,8 +166,9 @@ public class GamingFragment extends Fragment {
 
             public void onFinish() {
                 updateGameCountDownText("\u2714");
-                main.removeFragment(main.gamingFragment);
-                main.addFragment(main.previewFragment);
+//                main.removeFragment(main.gamingFragment);
+//                main.addFragment(main.previewFragment);
+                main.replaceFragment(main.previewFragment);
             }
         };
 

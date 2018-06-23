@@ -48,8 +48,9 @@ public class LoginFragment extends Fragment {
 
     public void loginSuccess(){
         Log.d("log", "loginSuccess: ");
-        main.removeFragment(main.loginFragment);
-        main.addFragment(main.readyFragment);
+//        main.removeFragment(main.loginFragment);
+//        main.addFragment(main.readyFragment);
+        main.replaceFragment(main.readyFragment);
     }
 
     /**
@@ -59,5 +60,6 @@ public class LoginFragment extends Fragment {
         Log.d("login button", "onClick: ");
         // need by 手q登陆
         main.login();
+//        loginSuccess();
     }
 }
