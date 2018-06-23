@@ -1,4 +1,4 @@
-package com.example.zhubingjing.test.Animation;
+package com.sh.shvideolibrary.Animation;
 
 import android.animation.ValueAnimator;
 import android.util.Log;

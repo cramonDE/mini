@@ -1,12 +1,12 @@
 package com.sh.shvideolibrary.Fragment;
 
 
-import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,19 +16,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.sh.shvideolibrary.Animation.FallAnimatorUpdateListener;
 import com.sh.shvideolibrary.R;
 import com.sh.shvideolibrary.VideoInputActivity;
 
-import java.util.concurrent.ScheduledExecutorService;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static android.content.ContentValues.TAG;
 
@@ -55,7 +51,9 @@ public class GamingFragment extends Fragment {
             gameTimer;                      // 游戏计时器
     private AlphaAnimation fadeIn;          // 文字淡入效果
     private Animation scaleAnim ;           // 放大效果
-    private ScheduledExecutorService schExService;       // 批量处理表情掉落线程池
+    private int positionNum;                // 位置（竖直通道）的数量
+    private float deviceWidth;                // 所用设备宽度
+    private float deviceHeight;               // 所用设备高度
 
     private Animation[] animations = new Animation[4];
     Button countdownBtn;
@@ -84,7 +82,7 @@ public class GamingFragment extends Fragment {
         //Set main activity
         main = (VideoInputActivity)getActivity();
 
-        init(1000, 500,2000, 5000);
+        init(10000, 500,2000, 1000, 5);
 
         return view;
     }
@@ -106,7 +104,13 @@ public class GamingFragment extends Fragment {
     /**
      * 初始化
      */
-    public void init(long gameTime, long updateGameTimerInterval, long emojiDuration, long emojiInterval){
+    public void init(long gameTime, long updateGameTimerInterval, long emojiDuration, long emojiInterval, final int positionNum){
+
+        //设备属性
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        main.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        deviceHeight = displayMetrics.heightPixels;
+        deviceWidth  = displayMetrics.widthPixels;
 
         //初始化动画
         fadeIn = new AlphaAnimation(0.0f , 1.0f ) ;
@@ -119,6 +123,7 @@ public class GamingFragment extends Fragment {
         this.updateGameTimerInterval = updateGameTimerInterval;
         this.emojiDuration = emojiDuration;
         this.emojiInterval = emojiInterval;
+        this.positionNum = positionNum;
 
         this.tv_gamecountdown.setText(gameTime/1000+"");
         this.progress.setMax((int)gameTime);
@@ -166,8 +171,8 @@ public class GamingFragment extends Fragment {
         emojiTimer = new CountDownTimer(game, emojiInterval) {
             @Override
             public void onTick(long millisUntilFinished) {
-                int i = (int)Math.floor(Math.random()*4.0);
-                int j = (int)Math.floor(Math.random()*4.0);
+                int i = (int)Math.floor(Math.random() * 4.0);
+                int j = (int)Math.floor(Math.random() * (float)positionNum);
                 dropEmoji(i,j);
             }
 
@@ -241,15 +246,17 @@ public class GamingFragment extends Fragment {
         // get emoji
         ImageView image = createEmoji(emojiIndex);
         // set horizontal position
-        image.setX(200 * positionIndex);
+        image.setX( deviceWidth / (positionNum+1) * (positionIndex + 1));
 
         // new animatorSet
-        AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.fall_down);
+        ObjectAnimator anim = ObjectAnimator.ofFloat(image, "y", -80.f, deviceHeight);
+        AnimatorSet set = new AnimatorSet();
         set.setDuration(emojiDuration);
+        set.play(anim);
         set.setTarget(image);
         set.start();
 
-        ((ObjectAnimator)set.getChildAnimations().get(0)).addUpdateListener(new com.example.zhubingjing.test.Animation.FallAnimatorUpdateListener());
+        ((ObjectAnimator)set.getChildAnimations().get(0)).addUpdateListener(new FallAnimatorUpdateListener());
     }
 
 
