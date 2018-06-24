@@ -29,7 +29,7 @@
         app:nts_animation_duration="150"
         app:nts_active_color="@color/red"
         app:nts_inactive_color="#fff"/>
-    app:nts_typeface="fonts/typeface.otf"otf
+    <!--app:nts_typeface="fonts/typeface.otf"otf-->
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/music_scroll"
