@@ -85,7 +85,7 @@ public class GamingFragment extends Fragment {
         //Set main activity
         main = (VideoInputActivity)getActivity();
 
-        init(10000, 500,2000, 1000, 5);
+        init(30000, 500,7000, 4000, 5);
 
         return view;
     }
@@ -271,7 +271,7 @@ public class GamingFragment extends Fragment {
         set.setTarget(image);
         set.start();
 
-        ((ObjectAnimator)set.getChildAnimations().get(0)).addUpdateListener(new FallAnimatorUpdateListener(image.getContext(), image));
+        ((ObjectAnimator)set.getChildAnimations().get(0)).addUpdateListener(new FallAnimatorUpdateListener(image.getContext(), image, main));
     }
 
 

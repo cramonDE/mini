@@ -8,16 +8,18 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.sh.shvideolibrary.R;
+import com.sh.shvideolibrary.VideoInputActivity;
 
 public class FallAnimatorUpdateListener implements ValueAnimator.AnimatorUpdateListener {
     boolean shoot = false;
     ImageView target;
     private Animation bingoAnim;
-
-    public FallAnimatorUpdateListener(Context context, ImageView target){
+    VideoInputActivity main;
+    public FallAnimatorUpdateListener(Context context, ImageView target, VideoInputActivity main){
         this.target = target;
         this.bingoAnim = AnimationUtils.loadAnimation(context, R.anim.bingo);            // 表情匹配动画
         bingoAnim.setAnimationListener(new BingoAnimationListener());
+        this.main = main;
     }
 
     @Override
@@ -27,10 +29,11 @@ public class FallAnimatorUpdateListener implements ValueAnimator.AnimatorUpdateL
         if(!shoot && yPosition > 600 && yPosition < 1300){
 //                    startTakePhoto();
             Log.d("SHOOOOOT", "onAnimationUpdate: "+"START");
-
+            main.startCaptureFrame();
             shoot = true;
         }else if(shoot && (yPosition > 1300)){
 //                    stopTakePhoto();
+            main.stopCaptureFrame();
             Log.d("SHOOOOOT", "onAnimationUpdate: "+"STOP");
             shoot = false;
         }

@@ -33,7 +33,15 @@
     <!-- style -->
     <string name="post_video">查看视频</string>
     <string name="back_to_game">返回游戏</string>
-
+    <string name="song1">fast_all_alone</string>
+    <string name="song2">fast_blah</string>
+    <string name="song3">fast_wild</string>
+    <string name="song4">slow_cheap_thrills</string>
+    <string name="song5">slow_lala_latch</string>
+    <string name="song6">slow_girl</string>
+    <string name="song7">mid_eat_you_up</string>
+    <string name="song8">mid_san_francisco</string>
+    <string name="song9">mid_second_guess</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -59,7 +59,7 @@ public class LoginFragment extends Fragment {
     public void QQLogin() {
         Log.d("login button", "onClick: ");
         // need by 手q登陆
-        main.login();
-//        loginSuccess();
+        //main.login();
+        loginSuccess();
     }
 }

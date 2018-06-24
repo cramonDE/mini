@@ -12,14 +12,18 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
+import android.os.Process;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -44,6 +48,7 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -64,6 +69,7 @@ public class VideoInputActivity extends Activity {
     //服务连接类,实现ServiceConnection接口,在实现方法中接收service对象,通过bindService启动服务时，需要连接类对象
     private MyServiceConnection myServiceConnection;
     private long countUp;
+    private boolean isFirstPhoto = true;
 
     private int quality = CamcorderProfile.QUALITY_480P;
     private static final int FOCUS_AREA_SIZE = 500;
@@ -115,7 +121,7 @@ public class VideoInputActivity extends Activity {
         quality = getIntent().getIntExtra("quality",Q480);
         QMUIStatusBarHelper.translucent(this);
 
-        mTencent = Tencent.createInstance(APP_ID, this.getApplicationContext());
+//        mTencent = Tencent.createInstance(APP_ID, this.getApplicationContext());
 
         if (null  == savedInstanceState) {
             loginFragment = new LoginFragment();
@@ -146,7 +152,7 @@ public class VideoInputActivity extends Activity {
     //点击对焦
     public void initialize() {
 //        button_ChangeCamera = (ImageView) findViewById(R.id.button_ChangeCamera);
-//        cameraPreview = (LinearLayout) findViewById(R.id.camera_preview);
+        cameraPreview = (LinearLayout) findViewById(R.id.camera_preview);
 //        buttonCapture = (ImageView) findViewById(R.id.button_capture);
 //        buttonFlash= (ImageView) findViewById(R.id.buttonFlash);
 //        chronoRecordingImage= (ImageView) findViewById(R.id.chronoRecordingImage);
@@ -156,8 +162,8 @@ public class VideoInputActivity extends Activity {
 //        startMusicBtn.setOnClickListener(startMusicListener);
 //        stopMusicBtn.setOnClickListener(stopMusicListener);
 //        buttonFlash.setOnClickListener(stopCaptureFrame);
-//        mPreview = new CameraPreview(VideoInputActivity.this, mCamera);
-//        cameraPreview.addView(mPreview);
+        mPreview = new CameraPreview(VideoInputActivity.this, mCamera);
+        cameraPreview.addView(mPreview);
 //        buttonCapture.setOnClickListener(captrureListener);
         myServiceConnection = new MyServiceConnection();
 
@@ -227,6 +233,28 @@ public class VideoInputActivity extends Activity {
 //            }
 //        });
     }
+    public void startCaptureFrame() {
+        mCamera.setPreviewCallback(new Camera.PreviewCallback() {
+            @Override
+            public void onPreviewFrame(byte[] data, Camera camera) {
+                Log.i(TAG, "processing frame");
+                Camera.Size size = mCamera.getParameters().getPreviewSize();
+                YuvImage image = new YuvImage(data, ImageFormat.NV21, size.width,
+                        size.height, null);
+                if (image != null) {
+                    transformPhoto(image, size.width, size.height);
+//
+                }
+            }
+        });
+    }
+
+    public void stopCaptureFrame() {
+        Log.d(TAG, "stopCaptureFrame: stop");
+        mCamera.setPreviewCallback(null);
+        isFirstPhoto = true;
+    }
+
 
     private void focusOnTouch(MotionEvent event) {
         if (mCamera != null) {
@@ -280,43 +308,43 @@ public class VideoInputActivity extends Activity {
 
     public void onResume() {
         super.onResume();
-//        if (!hasCamera(getApplicationContext())) {
-//            //这台设备没有发现摄像头
-//            Toast.makeText(getApplicationContext(), R.string.dont_have_camera_error
-//                    , Toast.LENGTH_SHORT).show();
-//            setResult(RESULT_CANCELED);
-//            releaseCamera();
-//            releaseMediaRecorder();
-//            finish();
-//        }
-//        if (mCamera == null) {
-//            releaseCamera();
-//            int cameraId = findFrontFacingCamera();
-//            mCamera = Camera.open(cameraId);
-//            mPreview.refreshCamera(mCamera);
-//        }
+        if (!hasCamera(getApplicationContext())) {
+            //这台设备没有发现摄像头
+            Toast.makeText(getApplicationContext(), R.string.dont_have_camera_error
+                    , Toast.LENGTH_SHORT).show();
+            setResult(RESULT_CANCELED);
+            releaseCamera();
+            releaseMediaRecorder();
+            finish();
+        }
+        if (mCamera == null) {
+            releaseCamera();
+            int cameraId = findFrontFacingCamera();
+            mCamera = Camera.open(cameraId);
+            mPreview.refreshCamera(mCamera);
+        }
     }
 
     //计时器
-    private void startChronometer() {
-        textChrono.setVisibility(View.VISIBLE);
-        final long startTime = SystemClock.elapsedRealtime();
-        textChrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-            @Override
-            public void onChronometerTick(Chronometer arg0) {
-                countUp = (SystemClock.elapsedRealtime() - startTime) / 1000;
-                if (countUp % 2 == 0) {
-                    chronoRecordingImage.setVisibility(View.VISIBLE);
-                } else {
-                    chronoRecordingImage.setVisibility(View.INVISIBLE);
-                }
-
-                String asText = String.format("%02d", countUp / 60) + ":" + String.format("%02d", countUp % 60);
-                textChrono.setText(asText);
-            }
-        });
-        textChrono.start();
-    }
+//    private void startChronometer() {
+//        textChrono.setVisibility(View.VISIBLE);
+//        final long startTime = SystemClock.elapsedRealtime();
+//        textChrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+//            @Override
+//            public void onChronometerTick(Chronometer arg0) {
+//                countUp = (SystemClock.elapsedRealtime() - startTime) / 1000;
+//                if (countUp % 2 == 0) {
+//                    chronoRecordingImage.setVisibility(View.VISIBLE);
+//                } else {
+//                    chronoRecordingImage.setVisibility(View.INVISIBLE);
+//                }
+//
+//                String asText = String.format("%02d", countUp / 60) + ":" + String.format("%02d", countUp % 60);
+//                textChrono.setText(asText);
+//            }
+//        });
+//        textChrono.start();
+//    }
 
     /**
      * 找前置摄像头,没有则返回-1
@@ -331,21 +359,6 @@ public class VideoInputActivity extends Activity {
             Camera.CameraInfo info = new Camera.CameraInfo();
             Camera.getCameraInfo(i, info);
             if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                cameraId = i;
-                break;
-            }
-        }
-        return cameraId;
-    }
-
-    private int findBackFacingCamera() {
-        int cameraId = -1;
-        //获取摄像头个数
-        int numberOfCameras = Camera.getNumberOfCameras();
-        for (int i = 0; i < numberOfCameras; i++) {
-            Camera.CameraInfo info = new Camera.CameraInfo();
-            Camera.getCameraInfo(i, info);
-            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
                 cameraId = i;
                 break;
             }
@@ -424,76 +437,125 @@ public class VideoInputActivity extends Activity {
             mCamera.setPreviewCallback(null);
         }
     };
+    public void stopRecord() {
+        mediaRecorder.stop(); //停止
+//        stopChronometer();
+//        buttonCapture.setImageResource(R.mipmap.player_record);
+        changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        releaseMediaRecorder();
+//        Toast.makeText(VideoInputActivity.this, R.string.video_captured, Toast.LENGTH_SHORT).show();
+        recording = false;
+//        Intent intent = new Intent();
+//        intent.putExtra(INTENT_EXTRA_VIDEO_PATH, url_file);
+//        setResult(RESULT_OK, intent);
+//        releaseCamera();
+        releaseMediaRecorder();
+//        finish();
+    }
 
-    View.OnClickListener captrureListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (recording) {
-                //如果正在录制点击这个按钮表示录制完成
-                mediaRecorder.stop(); //停止
-                stopChronometer();
-                buttonCapture.setImageResource(R.mipmap.player_record);
-                changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-                releaseMediaRecorder();
-                Toast.makeText(VideoInputActivity.this, R.string.video_captured, Toast.LENGTH_SHORT).show();
-                recording = false;
-                Intent intent = new Intent();
-                intent.putExtra(INTENT_EXTRA_VIDEO_PATH, url_file);
-                setResult(RESULT_OK, intent);
-                releaseCamera();
-                releaseMediaRecorder();
-                finish();
-            } else {
-                //准备开始录制视频
-                if (!prepareMediaRecorder()) {
-                    Toast.makeText(VideoInputActivity.this, getString(R.string.camera_init_fail), Toast.LENGTH_SHORT).show();
+    public void startRecord() {
+        if (!prepareMediaRecorder()) {
+            Toast.makeText(VideoInputActivity.this, getString(R.string.camera_init_fail), Toast.LENGTH_SHORT).show();
+            setResult(RESULT_CODE_FOR_RECORD_VIDEO_FAILED);
+            releaseCamera();
+            releaseMediaRecorder();
+            finish();
+        }
+        //开始录制视频
+        runOnUiThread(new Runnable() {
+            public void run() {
+                // If there are stories, add them to the table
+                try {
+                    mediaRecorder.start();
+//                    startChronometer();
+                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                        changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    } else {
+                        changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    }
+//                    buttonCapture.setImageResource(R.mipmap.player_stop);
+                } catch (final Exception ex) {
+                    Log.i("---", "Exception in thread" +ex.getMessage());
                     setResult(RESULT_CODE_FOR_RECORD_VIDEO_FAILED);
                     releaseCamera();
                     releaseMediaRecorder();
                     finish();
                 }
-                //开始录制视频
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        // If there are stories, add them to the table
-                        try {
-                            mediaRecorder.start();
-                            startChronometer();
-                            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                                changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                            } else {
-                                changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                            }
-                            buttonCapture.setImageResource(R.mipmap.player_stop);
-                        } catch (final Exception ex) {
-                            Log.i("---", "Exception in thread");
-                            setResult(RESULT_CODE_FOR_RECORD_VIDEO_FAILED);
-                            releaseCamera();
-                            releaseMediaRecorder();
-                            finish();
-                        }
-                    }
-                });
-                recording = true;
             }
-        }
-    };
+        });
+        recording = true;
+    }
 
-    View.OnClickListener startMusicListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Log.d(TAG, "thread interrup");
-            musicService.playerStart();
-        }
-    };
 
-    View.OnClickListener stopMusicListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Log.i(TAG, "end");
-            musicService.playerStop();
-        }
-    };
+//    View.OnClickListener captrureListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            if (recording) {
+//                //如果正在录制点击这个按钮表示录制完成
+//                mediaRecorder.stop(); //停止
+//                stopChronometer();
+//                buttonCapture.setImageResource(R.mipmap.player_record);
+//                changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+//                releaseMediaRecorder();
+//                Toast.makeText(VideoInputActivity.this, R.string.video_captured, Toast.LENGTH_SHORT).show();
+//                recording = false;
+//                Intent intent = new Intent();
+//                intent.putExtra(INTENT_EXTRA_VIDEO_PATH, url_file);
+//                setResult(RESULT_OK, intent);
+//                releaseCamera();
+//                releaseMediaRecorder();
+//                finish();
+//            } else {
+//                //准备开始录制视频
+//                if (!prepareMediaRecorder()) {
+//                    Toast.makeText(VideoInputActivity.this, getString(R.string.camera_init_fail), Toast.LENGTH_SHORT).show();
+//                    setResult(RESULT_CODE_FOR_RECORD_VIDEO_FAILED);
+//                    releaseCamera();
+//                    releaseMediaRecorder();
+//                    finish();
+//                }
+//                //开始录制视频
+//                runOnUiThread(new Runnable() {
+//                    public void run() {
+//                        // If there are stories, add them to the table
+//                        try {
+//                            mediaRecorder.start();
+//                            startChronometer();
+//                            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+//                                changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//                            } else {
+//                                changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//                            }
+//                            buttonCapture.setImageResource(R.mipmap.player_stop);
+//                        } catch (final Exception ex) {
+//                            Log.i("---", "Exception in thread");
+//                            setResult(RESULT_CODE_FOR_RECORD_VIDEO_FAILED);
+//                            releaseCamera();
+//                            releaseMediaRecorder();
+//                            finish();
+//                        }
+//                    }
+//                });
+//                recording = true;
+//            }
+//        }
+//    };
+
+//    View.OnClickListener startMusicListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            Log.d(TAG, "thread interrup");
+//            musicService.playerStart();
+//        }
+//    };
+//
+//    View.OnClickListener stopMusicListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            Log.i(TAG, "end");
+//            musicService.playerStop();
+//        }
+//    };
 
     private void changeRequestedOrientation(int orientation) {
         setRequestedOrientation(orientation);
@@ -546,19 +608,69 @@ public class VideoInputActivity extends Activity {
         unbindService(myServiceConnection);
     }
 
-    private void startFaceDetect(final String filePath, final int emojiNumber) {
+    private void transformPhoto(final YuvImage image, final int width, final int height) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                EmojiFaceComparer.test(filePath, emojiNumber);
+                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+                ByteArrayOutputStream outputSteam = new ByteArrayOutputStream();
+                image.compressToJpeg(new Rect(0, 0, width, height),
+                        50, outputSteam);
+                try {
+                    Bitmap bmp = BitmapFactory.decodeByteArray(outputSteam.toByteArray(), 0, outputSteam.size());
+                    bmp = rotateMyBitmap(bmp);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bmp.compress(Bitmap.CompressFormat.JPEG, 30, baos);
+                    if (true == isFirstPhoto) {
+                        isFirstPhoto = false;
+                        EmojiFaceComparer.faceDetect(baos.toByteArray(), 1);
+                        stopCaptureFrame();
+                    }
+//                    byte[] jpegData = outputSteam.toByteArray();
+//                    String pictureFilePath = getOutputPhoto();
+//                    File pictureFile = new File(pictureFilePath);
+//                    if (pictureFile == null){
+//                        Log.d(TAG, "Error creating media file, check storage permissions: ");
+//                        return;
+//                    }
+//                    try {
+//                        FileOutputStream fos = new FileOutputStream(pictureFile);
+//                        bmp.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+//                        fos.write(jpegData);
+//                        fos.close();
+//                    } catch (FileNotFoundException e) {
+//                        Log.d(TAG, "File not found: " + e.getMessage());
+//                    } catch (IOException e) {
+//                        Log.d(TAG, "Error accessing file: " + e.getMessage());
+//                    }
+//                    if (true == isFirstPhoto) {
+//                        boolean result = EmojiFaceComparer.test(pictureFilePath, 1);
+//                        isFirstPhoto = false;
+//                        Log.d(TAG, "run: " + result);
+//                        if (true == result) {
+//                            Toast.makeText(getApplicationContext(), "识别成功", Toast.LENGTH_SHORT).show();
+//                        }
+////                        stopCaptureFrame();
+//                    }
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
             }
         });
         thread.start();
     }
+
     public Bitmap rotateMyBitmap(Bitmap bmp){
         Matrix matrix = new Matrix();
         matrix.postRotate(270);
-        Bitmap nbmp2 = Bitmap.createBitmap(bmp, 0,0, bmp.getWidth(),  bmp.getHeight(), matrix, true);
+        Bitmap nbmp2 = bmp;
+        try {
+            nbmp2 = Bitmap.createBitmap(bmp, 0,0, bmp.getWidth(),  bmp.getHeight(), matrix, true);
+        } catch (Exception e) {
+
+        }
+
         return nbmp2;
     };
 
