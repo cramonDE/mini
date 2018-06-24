@@ -84,7 +84,7 @@ public class GamingFragment extends Fragment {
         //Set main activity
         main = (VideoInputActivity)getActivity();
 
-        init(1000, 500,2000, 5000);
+        init(15000, 500,2000, 2000);
 
         return view;
     }
@@ -133,6 +133,7 @@ public class GamingFragment extends Fragment {
 
                 if(millisUntilFinished/1000==1){
                     countdown.setText("Go!");
+                    main.startRecord();
                 }
             }
 
@@ -156,6 +157,8 @@ public class GamingFragment extends Fragment {
             }
 
             public void onFinish() {
+                Log.d(TAG, "onFinish: ");
+                main.stopRecord();
                 updateGameCountDownText("\u2714");
                 main.removeFragment(main.gamingFragment);
                 main.addFragment(main.previewFragment);

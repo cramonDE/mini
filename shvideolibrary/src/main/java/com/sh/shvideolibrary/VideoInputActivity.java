@@ -197,20 +197,20 @@ public class VideoInputActivity extends Activity {
 //                });
 //            }
 //        });
-//        cameraPreview.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//                    try {
-//                        focusOnTouch(event);
-//                    } catch (Exception e) {
-//                        Log.i(TAG, getString(R.string.fail_when_camera_try_autofocus, e.toString()));
-//                        //do nothing
-//                    }
-//                }
-//                return true;
-//            }
-//        });
+        cameraPreview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    try {
+                        focusOnTouch(event);
+                    } catch (Exception e) {
+                        Log.i(TAG, getString(R.string.fail_when_camera_try_autofocus, e.toString()));
+                        //do nothing
+                    }
+                }
+                return true;
+            }
+        });
     }
 
     private void focusOnTouch(MotionEvent event) {
@@ -283,31 +283,26 @@ public class VideoInputActivity extends Activity {
     }
 
     //计时器
-    private void startChronometer() {
-        textChrono.setVisibility(View.VISIBLE);
-        final long startTime = SystemClock.elapsedRealtime();
-        textChrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-            @Override
-            public void onChronometerTick(Chronometer arg0) {
-                countUp = (SystemClock.elapsedRealtime() - startTime) / 1000;
-                if (countUp % 2 == 0) {
-                    chronoRecordingImage.setVisibility(View.VISIBLE);
-                } else {
-                    chronoRecordingImage.setVisibility(View.INVISIBLE);
-                }
+//    private void startChronometer() {
+//        textChrono.setVisibility(View.VISIBLE);
+//        final long startTime = SystemClock.elapsedRealtime();
+//        textChrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+//            @Override
+//            public void onChronometerTick(Chronometer arg0) {
+//                countUp = (SystemClock.elapsedRealtime() - startTime) / 1000;
+//                if (countUp % 2 == 0) {
+//                    chronoRecordingImage.setVisibility(View.VISIBLE);
+//                } else {
+//                    chronoRecordingImage.setVisibility(View.INVISIBLE);
+//                }
+//
+//                String asText = String.format("%02d", countUp / 60) + ":" + String.format("%02d", countUp % 60);
+//                textChrono.setText(asText);
+//            }
+//        });
+//        textChrono.start();
+//    }
 
-                String asText = String.format("%02d", countUp / 60) + ":" + String.format("%02d", countUp % 60);
-                textChrono.setText(asText);
-            }
-        });
-        textChrono.start();
-    }
-
-    /**
-     * 找前置摄像头,没有则返回-1
-     *
-     * @return cameraId
-     */
     private int findFrontFacingCamera() {
         int cameraId = -1;
         //获取摄像头个数
@@ -316,21 +311,6 @@ public class VideoInputActivity extends Activity {
             Camera.CameraInfo info = new Camera.CameraInfo();
             Camera.getCameraInfo(i, info);
             if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                cameraId = i;
-                break;
-            }
-        }
-        return cameraId;
-    }
-
-    private int findBackFacingCamera() {
-        int cameraId = -1;
-        //获取摄像头个数
-        int numberOfCameras = Camera.getNumberOfCameras();
-        for (int i = 0; i < numberOfCameras; i++) {
-            Camera.CameraInfo info = new Camera.CameraInfo();
-            Camera.getCameraInfo(i, info);
-            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
                 cameraId = i;
                 break;
             }
@@ -409,60 +389,54 @@ public class VideoInputActivity extends Activity {
             mCamera.setPreviewCallback(null);
         }
     };
+    public void stopRecord() {
+        mediaRecorder.stop(); //停止
+//        stopChronometer();
+//        buttonCapture.setImageResource(R.mipmap.player_record);
+        changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        releaseMediaRecorder();
+//        Toast.makeText(VideoInputActivity.this, R.string.video_captured, Toast.LENGTH_SHORT).show();
+        recording = false;
+//        Intent intent = new Intent();
+//        intent.putExtra(INTENT_EXTRA_VIDEO_PATH, url_file);
+//        setResult(RESULT_OK, intent);
+//        releaseCamera();
+        releaseMediaRecorder();
+//        finish();
+    }
 
-    View.OnClickListener captrureListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (recording) {
-                //如果正在录制点击这个按钮表示录制完成
-                mediaRecorder.stop(); //停止
-                stopChronometer();
-                buttonCapture.setImageResource(R.mipmap.player_record);
-                changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-                releaseMediaRecorder();
-                Toast.makeText(VideoInputActivity.this, R.string.video_captured, Toast.LENGTH_SHORT).show();
-                recording = false;
-                Intent intent = new Intent();
-                intent.putExtra(INTENT_EXTRA_VIDEO_PATH, url_file);
-                setResult(RESULT_OK, intent);
-                releaseCamera();
-                releaseMediaRecorder();
-                finish();
-            } else {
-                //准备开始录制视频
-                if (!prepareMediaRecorder()) {
-                    Toast.makeText(VideoInputActivity.this, getString(R.string.camera_init_fail), Toast.LENGTH_SHORT).show();
+    public void startRecord() {
+        if (!prepareMediaRecorder()) {
+            Toast.makeText(VideoInputActivity.this, getString(R.string.camera_init_fail), Toast.LENGTH_SHORT).show();
+            setResult(RESULT_CODE_FOR_RECORD_VIDEO_FAILED);
+            releaseCamera();
+            releaseMediaRecorder();
+            finish();
+        }
+        //开始录制视频
+        runOnUiThread(new Runnable() {
+            public void run() {
+                // If there are stories, add them to the table
+                try {
+                    mediaRecorder.start();
+//                    startChronometer();
+                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                        changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    } else {
+                        changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    }
+//                    buttonCapture.setImageResource(R.mipmap.player_stop);
+                } catch (final Exception ex) {
+                    Log.i("---", "Exception in thread" +ex.getMessage());
                     setResult(RESULT_CODE_FOR_RECORD_VIDEO_FAILED);
                     releaseCamera();
                     releaseMediaRecorder();
                     finish();
                 }
-                //开始录制视频
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        // If there are stories, add them to the table
-                        try {
-                            mediaRecorder.start();
-                            startChronometer();
-                            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                                changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                            } else {
-                                changeRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                            }
-                            buttonCapture.setImageResource(R.mipmap.player_stop);
-                        } catch (final Exception ex) {
-                            Log.i("---", "Exception in thread");
-                            setResult(RESULT_CODE_FOR_RECORD_VIDEO_FAILED);
-                            releaseCamera();
-                            releaseMediaRecorder();
-                            finish();
-                        }
-                    }
-                });
-                recording = true;
             }
-        }
-    };
+        });
+        recording = true;
+    }
 
     View.OnClickListener startMusicListener = new View.OnClickListener() {
         @Override

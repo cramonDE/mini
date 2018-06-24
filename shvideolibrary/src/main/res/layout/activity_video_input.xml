@@ -14,27 +14,27 @@
         android:layout_height="match_parent">
     </FrameLayout>
 
-    <!--<ImageView-->
-        <!--android:id="@+id/chronoRecordingImage"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignBottom="@+id/textChrono"-->
-        <!--android:layout_alignTop="@+id/textChrono"-->
-        <!--android:layout_toLeftOf="@+id/textChrono"-->
-        <!--android:adjustViewBounds="true"-->
-        <!--android:scaleType="fitEnd"-->
-        <!--android:src="@mipmap/player_record"-->
-        <!--android:visibility="gone"/>-->
-    <!--<Chronometer-->
-        <!--android:id="@+id/textChrono"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_margin="10dp"-->
-        <!--android:text="00:00"-->
-        <!--android:textColor="@android:color/white"-->
-        <!--android:textSize="20dp"-->
-        <!--android:visibility="gone"/>-->
+    <ImageView
+        android:id="@+id/chronoRecordingImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textChrono"
+        android:layout_alignTop="@+id/textChrono"
+        android:layout_toLeftOf="@+id/textChrono"
+        android:adjustViewBounds="true"
+        android:scaleType="fitEnd"
+        android:src="@mipmap/player_record"
+        android:visibility="gone"/>
+    <Chronometer
+        android:id="@+id/textChrono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:text="00:00"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"
+        android:visibility="gone"/>
     <!--<LinearLayout-->
         <!--android:id="@+id/buttonsLayout"-->
         <!--android:layout_width="match_parent"-->
