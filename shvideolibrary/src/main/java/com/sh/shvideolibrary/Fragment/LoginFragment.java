@@ -1,8 +1,8 @@
 package com.sh.shvideolibrary.Fragment;
 
 
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,20 +31,35 @@ public class LoginFragment extends Fragment {
         ButterKnife.bind(this, view);
         //Set main activity
         main = ((VideoInputActivity)getActivity());
+
+        // login button and listener
         loginBtn = (ImageButton) view.findViewById(R.id.ibt_login);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("login button", "onClick: ");
-                loginSuccess();
+                QQLogin();
             }
         });
+
+        //
         return view;
     }
 
-    private void loginSuccess(){
+    public void loginSuccess(){
         Log.d("log", "loginSuccess: ");
-        main.removeFragment(main.loginFragment);
-        main.addFragment(main.readyFragment);
+//        main.removeFragment(main.loginFragment);
+//        main.addFragment(main.readyFragment);
+        main.replaceFragment(main.readyFragment);
+    }
+
+    /**
+     * QQ登录方法
+     */
+    public void QQLogin() {
+        Log.d("login button", "onClick: ");
+        // need by 手q登陆
+        main.login();
+//        loginSuccess();
     }
 }

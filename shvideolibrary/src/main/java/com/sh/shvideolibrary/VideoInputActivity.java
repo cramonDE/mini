@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.Presentation;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,21 +12,15 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Rect;
-import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.SystemClock;
-
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -46,18 +39,20 @@ import com.sh.shvideolibrary.Fragment.PostFragment;
 import com.sh.shvideolibrary.Fragment.PreviewFragment;
 import com.sh.shvideolibrary.Fragment.ReadyFragment;
 import com.sh.shvideolibrary.emojiFaceComparer.EmojiFaceComparer;
+import com.tencent.connect.common.Constants;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
+// need by 手q登陆-start
+// need by 手q登陆-end
 
 public class VideoInputActivity extends Activity {
     private CameraPreview mPreview;
@@ -100,6 +95,12 @@ public class VideoInputActivity extends Activity {
     public FollowFragment followFragment;
     public HomeFragment homeFragment;
 
+    // need by 手q登陆-start
+    private static final String APP_ID = "101485084";   // 从手q互联平台获得的APP_ID
+    public Tencent mTencent;  // 登陆SDK使用的接口
+    public IUiListener mIUiListener;  // 登陆SDK完成的回调接口
+    // need by 手q登陆-end
+
     public static void startActivityForResult(Activity activity, int requestCode,int quality) {
         Intent intent = new Intent(activity, VideoInputActivity.class);
         intent.putExtra("quality",quality);
@@ -113,6 +114,9 @@ public class VideoInputActivity extends Activity {
         setContentView(R.layout.activity_video_input);
         quality = getIntent().getIntExtra("quality",Q480);
         QMUIStatusBarHelper.translucent(this);
+
+        mTencent = Tencent.createInstance(APP_ID, this.getApplicationContext());
+
         if (null  == savedInstanceState) {
             loginFragment = new LoginFragment();
             readyFragment = new ReadyFragment();
@@ -125,13 +129,24 @@ public class VideoInputActivity extends Activity {
             addFragment(loginFragment);
         }
         initialize();
+
+        final FragmentManager manager = getFragmentManager();
+        manager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+
+            @Override
+            public void onBackStackChanged() {
+                for(int entry = 0; entry < manager.getBackStackEntryCount(); entry++){
+                    Log.i("manager", "Found fragment: " + manager.getBackStackEntryAt(entry).getName());
+                }
+            }
+        });
     }
 
 
     //点击对焦
     public void initialize() {
 //        button_ChangeCamera = (ImageView) findViewById(R.id.button_ChangeCamera);
-        cameraPreview = (LinearLayout) findViewById(R.id.camera_preview);
+//        cameraPreview = (LinearLayout) findViewById(R.id.camera_preview);
 //        buttonCapture = (ImageView) findViewById(R.id.button_capture);
 //        buttonFlash= (ImageView) findViewById(R.id.buttonFlash);
 //        chronoRecordingImage= (ImageView) findViewById(R.id.chronoRecordingImage);
@@ -141,8 +156,8 @@ public class VideoInputActivity extends Activity {
 //        startMusicBtn.setOnClickListener(startMusicListener);
 //        stopMusicBtn.setOnClickListener(stopMusicListener);
 //        buttonFlash.setOnClickListener(stopCaptureFrame);
-        mPreview = new CameraPreview(VideoInputActivity.this, mCamera);
-        cameraPreview.addView(mPreview);
+//        mPreview = new CameraPreview(VideoInputActivity.this, mCamera);
+//        cameraPreview.addView(mPreview);
 //        buttonCapture.setOnClickListener(captrureListener);
         myServiceConnection = new MyServiceConnection();
 
@@ -265,21 +280,21 @@ public class VideoInputActivity extends Activity {
 
     public void onResume() {
         super.onResume();
-        if (!hasCamera(getApplicationContext())) {
-            //这台设备没有发现摄像头
-            Toast.makeText(getApplicationContext(), R.string.dont_have_camera_error
-                    , Toast.LENGTH_SHORT).show();
-            setResult(RESULT_CANCELED);
-            releaseCamera();
-            releaseMediaRecorder();
-            finish();
-        }
-        if (mCamera == null) {
-            releaseCamera();
-            int cameraId = findFrontFacingCamera();
-            mCamera = Camera.open(cameraId);
-            mPreview.refreshCamera(mCamera);
-        }
+//        if (!hasCamera(getApplicationContext())) {
+//            //这台设备没有发现摄像头
+//            Toast.makeText(getApplicationContext(), R.string.dont_have_camera_error
+//                    , Toast.LENGTH_SHORT).show();
+//            setResult(RESULT_CANCELED);
+//            releaseCamera();
+//            releaseMediaRecorder();
+//            finish();
+//        }
+//        if (mCamera == null) {
+//            releaseCamera();
+//            int cameraId = findFrontFacingCamera();
+//            mCamera = Camera.open(cameraId);
+//            mPreview.refreshCamera(mCamera);
+//        }
     }
 
     //计时器
@@ -581,5 +596,64 @@ public class VideoInputActivity extends Activity {
             ft.commit();
         }
     }
+
+    /**
+     * send tab index message when turning to homepage
+     * @param home
+     * @param tabIndex
+     */
+    public void replaceFragment(HomeFragment home, int tabIndex){
+        String backStateName = home.getClass().getName();
+
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.setCustomAnimations(0,0);
+        boolean fragmentPopped = manager.popBackStackImmediate (backStateName, 0);
+
+        if (!fragmentPopped){ //fragment not in back stack, create it.
+            Bundle bundle = new Bundle();
+            bundle.putString("tab", tabIndex+"");
+            //set Fragmentclass Arguments
+            homeFragment.setArguments(bundle);
+
+            ft.replace(R.id.main_frame, home);
+            ft.addToBackStack(backStateName);
+            ft.commit();
+        }
+    }
+
+    // need by 手q登陆-start
+    public void login() {
+        // 实现IUiListener三个回调
+        mIUiListener = new IUiListener() {
+            @Override
+            public void onComplete(Object o) {
+                Toast.makeText(VideoInputActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                // 登陆成功进行页面切换
+                loginFragment.loginSuccess();
+            }
+
+            @Override
+            public void onError(UiError uiError) {
+                Toast.makeText(VideoInputActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(VideoInputActivity.this, "登录取消", Toast.LENGTH_SHORT).show();
+            }
+        };
+        mTencent.login(this, "all", mIUiListener);
+    }
+
+    // 应用调用Andriod_SDK接口时，如果要成功接收到回调，需要在调用接口的Activity的onActivityResult方法中增加如下代码
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUEST_LOGIN) {
+            Tencent.onActivityResultData(requestCode, resultCode, data, mIUiListener);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    // need by 手q登陆-end
 
 }
