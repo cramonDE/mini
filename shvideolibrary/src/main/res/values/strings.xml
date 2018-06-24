@@ -29,6 +29,10 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="pk">PK模式</string>
     <string name="dont_have_app_to_open_file">没有支持此格式的播放器</string>
+    
+    <!-- style -->
+    <string name="post_video">查看视频</string>
+    <string name="back_to_game">返回游戏</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
