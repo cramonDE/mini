@@ -27,14 +27,11 @@ public class FallAnimatorUpdateListener implements ValueAnimator.AnimatorUpdateL
         float yPosition = (Float)animation.getAnimatedValue();
 
         if(!shoot && yPosition > 600 && yPosition < 1300){
-//                    startTakePhoto();
-            Log.d("SHOOOOOT", "onAnimationUpdate: "+"START");
+
             main.startCaptureFrame();
             shoot = true;
         }else if(shoot && (yPosition > 1300)){
-//                    stopTakePhoto();
             main.stopCaptureFrame();
-            Log.d("SHOOOOOT", "onAnimationUpdate: "+"STOP");
             shoot = false;
         }
     }
