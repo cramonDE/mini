@@ -86,7 +86,7 @@ public class GamingFragment extends Fragment {
         //Set main activity
         main = (VideoInputActivity)getActivity();
 
-        init(10000, 500,2000, 1000, 5);
+        init(1000, 500,2000, 1000, 5);
 
         return view;
     }

@@ -597,6 +597,31 @@ public class VideoInputActivity extends Activity {
         }
     }
 
+    /**
+     * send tab index message when turning to homepage
+     * @param home
+     * @param tabIndex
+     */
+    public void replaceFragment(HomeFragment home, int tabIndex){
+        String backStateName = home.getClass().getName();
+
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.setCustomAnimations(0,0);
+        boolean fragmentPopped = manager.popBackStackImmediate (backStateName, 0);
+
+        if (!fragmentPopped){ //fragment not in back stack, create it.
+            Bundle bundle = new Bundle();
+            bundle.putString("tab", tabIndex+"");
+            //set Fragmentclass Arguments
+            homeFragment.setArguments(bundle);
+
+            ft.replace(R.id.main_frame, home);
+            ft.addToBackStack(backStateName);
+            ft.commit();
+        }
+    }
+
     // need by 手q登陆-start
     public void login() {
         // 实现IUiListener三个回调

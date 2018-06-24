@@ -1,9 +1,7 @@
 package com.sh.shvideolibrary.Fragment;
 
-import android.content.Context;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,36 +11,39 @@ import com.gigamole.navigationtabstrip.NavigationTabStrip;
 import com.sh.shvideolibrary.R;
 import com.sh.shvideolibrary.VideoInputActivity;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class HomeFragment extends Fragment {
     VideoInputActivity main;
 
-    NavigationTabStrip homeTab;
+    public NavigationTabStrip homeTab;
     ScrollView home_scroll;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // get selected tab, default 0
+        String tab = getArguments().getString("tab");
+        tab = (tab==null)? "0" : tab;
+
         //Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         //Bind view
         ButterKnife.bind(this, view);
+
         homeTab = (NavigationTabStrip) view.findViewById(R.id.home_tab);
         home_scroll = (ScrollView) view.findViewById(R.id.home_scroll);
-
-        init();
+        init(Integer.parseInt(tab));
 
         return view;
     }
 
-    public void init(){
+    public void init(int tab){
         //Set main activity
         main = ((VideoInputActivity)getActivity());
 
         //tab默认选择第一个
-        homeTab.setTabIndex(0, true);
+        homeTab.setTabIndex(tab, true);
 
         //tab call back
         homeTab.setOnTabStripSelectedIndexListener(new NavigationTabStrip.OnTabStripSelectedIndexListener() {

@@ -37,6 +37,23 @@ public class PostFragment extends Fragment {
             }
         });
 
+        Button save_local = (Button) view.findViewById(R.id.btn_save_local);
+        save_local.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveLocal();
+            }
+        });
+
+        Button save_draft = (Button) view.findViewById(R.id.btn_save_draft);
+        save_draft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveDraft();
+            }
+        });
+
+
         return view;
     }
 
@@ -44,6 +61,24 @@ public class PostFragment extends Fragment {
 //        main.removeFragment(main.postFragment);
 //        main.addFragment(main.followFragment);
         main.replaceFragment(main.followFragment);
+    }
+
+    /**
+     * 存本地，跳到homepage
+     */
+    public void saveLocal(){
+        main.replaceFragment(main.homeFragment, 0);
+//        main.homeFragment.homeTab.setTabIndex(0, true);
+
+    }
+
+    /**
+     * 存为草稿，跳到homepage
+     */
+    public void saveDraft(){
+        main.replaceFragment(main.homeFragment, 2);
+//        main.homeFragment.homeTab.setTabIndex(2,true);
+
     }
 
 }
