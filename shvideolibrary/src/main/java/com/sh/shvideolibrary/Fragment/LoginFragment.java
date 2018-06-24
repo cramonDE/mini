@@ -51,6 +51,7 @@ public class LoginFragment extends Fragment {
 //        main.removeFragment(main.loginFragment);
 //        main.addFragment(main.readyFragment);
         main.replaceFragment(main.readyFragment);
+        main.getFragmentManager().beginTransaction().detach(main.readyFragment).attach(main.readyFragment).commit();
     }
 
     /**
@@ -59,7 +60,7 @@ public class LoginFragment extends Fragment {
     public void QQLogin() {
         Log.d("login button", "onClick: ");
         // need by 手q登陆
-        //main.login();
-        loginSuccess();
+        main.login();
+//        loginSuccess();
     }
 }

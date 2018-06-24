@@ -44,5 +44,6 @@ public class FollowFragment extends Fragment {
 //        main.removeFragment(main.followFragment);
 //        main.addFragment(main.homeFragment);
         main.replaceFragment(main.homeFragment);
+        main.getFragmentManager().beginTransaction().detach(main.homeFragment).attach(main.homeFragment).commit();
     }
 }

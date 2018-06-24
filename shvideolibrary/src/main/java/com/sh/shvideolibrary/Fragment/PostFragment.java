@@ -61,6 +61,7 @@ public class PostFragment extends Fragment {
 //        main.removeFragment(main.postFragment);
 //        main.addFragment(main.followFragment);
         main.replaceFragment(main.followFragment);
+        main.getFragmentManager().beginTransaction().detach(main.followFragment).attach(main.followFragment).commit();
     }
 
     /**

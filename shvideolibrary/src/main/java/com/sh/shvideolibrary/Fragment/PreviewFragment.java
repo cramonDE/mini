@@ -46,11 +46,13 @@ public class PreviewFragment extends Fragment {
 //        main.removeFragment(main.previewFragment);
 //        main.addFragment(main.readyFragment);
         main.replaceFragment(main.readyFragment);
+        main.getFragmentManager().beginTransaction().detach(main.readyFragment).attach(main.readyFragment).commit();
     }
 
     public void post(){
 //        main.removeFragment(main.previewFragment);
 //        main.addFragment(main.postFragment);
         main.replaceFragment(main.postFragment);
+        main.getFragmentManager().beginTransaction().detach(main.postFragment).attach(main.postFragment).commit();
     }
 }

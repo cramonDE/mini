@@ -121,7 +121,7 @@ public class VideoInputActivity extends Activity {
         quality = getIntent().getIntExtra("quality",Q480);
         QMUIStatusBarHelper.translucent(this);
 
-//        mTencent = Tencent.createInstance(APP_ID, this.getApplicationContext());
+        mTencent = Tencent.createInstance(APP_ID, this.getApplicationContext());
 
         if (null  == savedInstanceState) {
             loginFragment = new LoginFragment();
