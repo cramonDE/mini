@@ -56,7 +56,6 @@ public class GamingFragment extends Fragment {
     private float deviceHeight;             // 所用设备高度
     private int comboNum = 0;                   // combo个数
 
-    private Animation[] animations = new Animation[4];
     Button countdownBtn;
     ProgressBar progress;
     TextView countdown;
@@ -86,7 +85,7 @@ public class GamingFragment extends Fragment {
         //Set main activity
         main = (VideoInputActivity)getActivity();
 
-        init(1000, 500,2000, 1000, 5);
+        init(10000, 500,2000, 1000, 5);
 
         return view;
     }
@@ -272,7 +271,7 @@ public class GamingFragment extends Fragment {
         set.setTarget(image);
         set.start();
 
-        ((ObjectAnimator)set.getChildAnimations().get(0)).addUpdateListener(new FallAnimatorUpdateListener());
+        ((ObjectAnimator)set.getChildAnimations().get(0)).addUpdateListener(new FallAnimatorUpdateListener(image.getContext(), image));
     }
 
 

@@ -67,8 +67,11 @@ public class PostFragment extends Fragment {
      * 存本地，跳到homepage
      */
     public void saveLocal(){
+        if(main.homeFragment.homeTab!=null){
+            main.homeFragment.setTab(0);
+        }
+
         main.replaceFragment(main.homeFragment, 0);
-//        main.homeFragment.homeTab.setTabIndex(0, true);
 
     }
 
@@ -76,8 +79,10 @@ public class PostFragment extends Fragment {
      * 存为草稿，跳到homepage
      */
     public void saveDraft(){
+        if(main.homeFragment.homeTab!=null)
+            main.homeFragment.setTab(2);
+
         main.replaceFragment(main.homeFragment, 2);
-//        main.homeFragment.homeTab.setTabIndex(2,true);
 
     }
 

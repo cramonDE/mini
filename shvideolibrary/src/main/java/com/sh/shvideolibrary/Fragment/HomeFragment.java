@@ -20,11 +20,13 @@ public class HomeFragment extends Fragment {
     public NavigationTabStrip homeTab;
     ScrollView home_scroll;
 
+    int tab = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // get selected tab, default 0
-        String tab = getArguments().getString("tab");
-        tab = (tab==null)? "0" : tab;
+        String tabStr = getArguments().getString("tab");
+        tab = (tabStr==null)? tab : Integer.parseInt(tabStr);
 
         //Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -33,12 +35,18 @@ public class HomeFragment extends Fragment {
 
         homeTab = (NavigationTabStrip) view.findViewById(R.id.home_tab);
         home_scroll = (ScrollView) view.findViewById(R.id.home_scroll);
-        init(Integer.parseInt(tab));
+        init();
 
         return view;
     }
 
-    public void init(int tab){
+    @Override
+    public void onResume(){
+        super.onResume();
+        homeTab.setTabIndex(tab, true);
+    }
+
+    public void init(){
         //Set main activity
         main = ((VideoInputActivity)getActivity());
 
@@ -62,5 +70,10 @@ public class HomeFragment extends Fragment {
 
             }
         });
+    }
+
+    public void setTab(int i){
+       homeTab.setTabIndex(i, true);
+       tab = i;
     }
 }
