@@ -20,7 +20,7 @@
         android:textColor="@color/coundownColor"
         android:textSize="11pt"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"/>
+        android:layout_marginTop="77dp"/>
 
     <TextView
         android:id="@+id/tv_score"
@@ -30,8 +30,8 @@
         android:textColor="@color/coundownColor"
         android:textSize="20pt"
         android:layout_alignLeft="@id/score_panel"
-        android:layout_marginLeft="90dp"
-        android:layout_marginTop="107dp" />
+        android:layout_marginLeft="95dp"
+        android:layout_marginTop="113dp" />
 
     <TextView
         android:id="@+id/tv_catch"
@@ -41,7 +41,7 @@
         android:textColor="@color/coundownColor"
         android:textSize="8pt"
         android:layout_alignLeft="@id/score_panel"
-        android:layout_marginLeft="100dp"
+        android:layout_marginLeft="103dp"
         android:layout_marginTop="170dp" />
     <TextView
         android:id="@+id/tv_combo"
@@ -51,7 +51,7 @@
         android:textColor="@color/coundownColor"
         android:textSize="8pt"
         android:layout_alignLeft="@id/score_panel"
-        android:layout_marginLeft="170dp"
+        android:layout_marginLeft="173dp"
         android:layout_marginTop="170dp" />
 
     <RelativeLayout
