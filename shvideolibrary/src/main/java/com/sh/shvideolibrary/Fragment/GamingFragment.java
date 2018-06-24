@@ -262,10 +262,10 @@ public class GamingFragment extends Fragment {
         // get emoji
         ImageView image = createEmoji(emojiIndex);
         // set horizontal position
-        image.setX( deviceWidth / (positionNum+1) * (positionIndex + 1));
+        image.setX( deviceWidth / (positionNum+1) * (positionIndex));
 
         // new animatorSet
-        ObjectAnimator anim = ObjectAnimator.ofFloat(image, "y", -80.f, deviceHeight);
+        ObjectAnimator anim = ObjectAnimator.ofFloat(image, "y", -80.f, deviceHeight + 150.f);
         AnimatorSet set = new AnimatorSet();
         set.setDuration(emojiDuration);
         set.play(anim);
