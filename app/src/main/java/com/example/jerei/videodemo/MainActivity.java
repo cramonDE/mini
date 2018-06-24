@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
@@ -41,6 +42,15 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 openView(path);
+            }
+        });
+
+        //另一个入口
+        Button enterBtn = (Button)findViewById(R.id.btn_enter);
+        enterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VideoInputActivity.startActivityForResult(MainActivity.this, REQUEST_CODE_FOR_RECORD_VIDEO,VideoInputActivity.Q720);
             }
         });
     }
