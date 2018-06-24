@@ -25,9 +25,11 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // get selected tab, default 0
-        String tabStr = getArguments().getString("tab");
-        tab = (tabStr==null)? tab : Integer.parseInt(tabStr);
-
+        if(getArguments()!=null){
+            String tabStr = getArguments().getString("tab");
+            tab = (tabStr==null)? tab : Integer.parseInt(tabStr);
+        }
+        
         //Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         //Bind view

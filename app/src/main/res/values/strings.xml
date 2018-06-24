@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VideoDemo</string>
+    <string name="app_name">Face Down</string>
     <string name="chat_video_too_short">录制过短，请重试</string>
 
 
