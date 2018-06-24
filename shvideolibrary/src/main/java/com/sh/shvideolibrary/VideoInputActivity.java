@@ -64,7 +64,7 @@ public class VideoInputActivity extends Activity {
     private Camera mCamera;
     private MediaRecorder mediaRecorder;
     private String url_file;
-    private MusicService musicService;
+    public MusicService musicService;
     private boolean mBind;
     //服务连接类,实现ServiceConnection接口,在实现方法中接收service对象,通过bindService启动服务时，需要连接类对象
     private MyServiceConnection myServiceConnection;

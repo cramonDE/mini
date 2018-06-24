@@ -70,6 +70,7 @@ public class ReadyFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        musicTV.setText(musicChosen);
         Log.d("reusme", "onResume: ");
     }
 

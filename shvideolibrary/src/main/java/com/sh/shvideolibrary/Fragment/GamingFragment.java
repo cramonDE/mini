@@ -55,6 +55,7 @@ public class GamingFragment extends Fragment {
     private float deviceWidth;              // 所用设备宽度
     private float deviceHeight;             // 所用设备高度
     private int comboNum = 0;                   // combo个数
+    public int musicIndex = 0;
 
     Button countdownBtn;
     ProgressBar progress;
@@ -205,6 +206,7 @@ public class GamingFragment extends Fragment {
         //游戏倒计时开始
         gameTimer.start();
         emojiTimer.start();
+        main.musicService.playerStart(this.musicIndex);
     }
 
     /**

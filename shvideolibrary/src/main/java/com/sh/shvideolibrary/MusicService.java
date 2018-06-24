@@ -62,14 +62,14 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     /**
      * 播放音乐
      */
-    public void playerStart(){
+    public void playerStart(int index){
 
 
         //判断是否准备好
         if(isPrepared) {
             //判断播放器是否为null，和是否正在播放
             if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
-                mediaPlayer.seekTo(0);
+                mediaPlayer.seekTo(index);
                 mediaPlayer.start();
             }
         }
