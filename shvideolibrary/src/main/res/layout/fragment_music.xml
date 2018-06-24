@@ -45,7 +45,7 @@
 
             <LinearLayout
                 android:id="@+id/music_1"
-                android:tag="First Music"
+                android:tag="@string/song1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -61,11 +61,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="testtesttest"/>
+                    android:text="@string/song1"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/music_2"
-                android:tag="我们的光芒"
+                android:tag="@string/song2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -81,11 +81,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="testtesttest"/>
+                    android:text="@string/song2"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/music_3"
-                android:tag="叫什么好呢"
+                android:tag="@string/song3"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_columnWeight="1"
@@ -101,11 +101,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="testtesttest"/>
+                    android:text="@string/song3"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/music_4"
-                android:tag="最后一个"
+                android:tag="@string/song4"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -121,11 +121,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="testtesttest"/>
+                    android:text="@string/song4"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/music_5"
-                android:tag="最后一个"
+                android:tag="@string/song5"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -141,11 +141,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="testtesttest"/>
+                    android:text="@string/song5"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/music_6"
-                android:tag="最后一个"
+                android:tag="@string/song6"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -161,11 +161,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="testtesttest"/>
+                    android:text="@string/song6"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/music_7"
-                android:tag="最后一个"
+                android:tag="@string/song7"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -181,11 +181,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="testtesttest"/>
+                    android:text="@string/song7"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/music_8"
-                android:tag="最后一个"
+                android:tag="@string/song8"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -201,11 +201,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="testtesttest"/>
+                    android:text="@string/song8"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/music_9"
-                android:tag="最后一个"
+                android:tag="@string/song9"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -221,7 +221,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="testtesttest"/>
+                    android:text="@string/song9"/>
             </LinearLayout>
 
 
