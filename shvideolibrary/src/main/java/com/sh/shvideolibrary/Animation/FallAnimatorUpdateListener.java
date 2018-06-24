@@ -27,7 +27,7 @@ public class FallAnimatorUpdateListener implements ValueAnimator.AnimatorUpdateL
         if(!shoot && yPosition > 600 && yPosition < 1300){
 //                    startTakePhoto();
             Log.d("SHOOOOOT", "onAnimationUpdate: "+"START");
-            
+
             shoot = true;
         }else if(shoot && (yPosition > 1300)){
 //                    stopTakePhoto();

@@ -1,8 +1,8 @@
 package com.sh.shvideolibrary.Fragment;
 
 
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +15,7 @@ import com.gigamole.navigationtabstrip.NavigationTabStrip;
 import com.sh.shvideolibrary.R;
 import com.sh.shvideolibrary.VideoInputActivity;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static android.content.ContentValues.TAG;
 
@@ -31,7 +29,6 @@ public class MusicFragment extends Fragment {
     VideoInputActivity main;
 
     ImageButton close;
-    LinearLayout music_1;
     NavigationTabStrip musicTab;
     ScrollView music_scroll;
 
@@ -42,7 +39,16 @@ public class MusicFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_music, container, false);
         close = (ImageButton) view.findViewById(R.id.ibt_close);
         musicTab = (NavigationTabStrip) view.findViewById(R.id.music_tab);
-        music_1 = (LinearLayout) view.findViewById(R.id.music_1);
+        LinearLayout music_1 = (LinearLayout) view.findViewById(R.id.music_1);
+        LinearLayout music_2 = (LinearLayout) view.findViewById(R.id.music_2);
+        LinearLayout music_3 = (LinearLayout) view.findViewById(R.id.music_3);
+        LinearLayout music_4 = (LinearLayout) view.findViewById(R.id.music_4);
+        LinearLayout music_5 = (LinearLayout) view.findViewById(R.id.music_5);
+        LinearLayout music_6 = (LinearLayout) view.findViewById(R.id.music_6);
+        LinearLayout music_7 = (LinearLayout) view.findViewById(R.id.music_7);
+        LinearLayout music_8 = (LinearLayout) view.findViewById(R.id.music_8);
+        LinearLayout music_9 = (LinearLayout) view.findViewById(R.id.music_9);
+
         music_scroll = (ScrollView) view.findViewById(R.id.music_scroll);
 
         close.setOnClickListener(new View.OnClickListener() {
