@@ -1,8 +1,8 @@
 package com.sh.shvideolibrary.Fragment;
 
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +12,7 @@ import com.sh.shvideolibrary.R;
 import com.sh.shvideolibrary.VideoInputActivity;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,53 +38,13 @@ public class PostFragment extends Fragment {
             }
         });
 
-        Button save_local = (Button) view.findViewById(R.id.btn_save_local);
-        save_local.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveLocal();
-            }
-        });
-
-        Button save_draft = (Button) view.findViewById(R.id.btn_save_draft);
-        save_draft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveDraft();
-            }
-        });
-
-
         return view;
     }
 
     public void post(){
-//        main.removeFragment(main.postFragment);
-//        main.addFragment(main.followFragment);
-        main.replaceFragment(main.followFragment);
-    }
-
-    /**
-     * 存本地，跳到homepage
-     */
-    public void saveLocal(){
-        if(main.homeFragment.homeTab!=null){
-            main.homeFragment.setTab(0);
-        }
-
-        main.replaceFragment(main.homeFragment, 0);
-
-    }
-
-    /**
-     * 存为草稿，跳到homepage
-     */
-    public void saveDraft(){
-        if(main.homeFragment.homeTab!=null)
-            main.homeFragment.setTab(2);
-
-        main.replaceFragment(main.homeFragment, 2);
-
+        main.removeFragment(main.postFragment);
+        main.addFragment(main.followFragment);
+//        main.replaceFragment(main.followFragment);
     }
 
 }
