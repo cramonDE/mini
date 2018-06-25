@@ -10,13 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
+
 import javax.net.ssl.SSLException;
 
 //命令行调用函数示范
@@ -85,8 +84,8 @@ class API_port {
         emoji_code = eCode;
         File file = new File(file_path);
         byte[] buff = getBytesFromFile(file);
-        map.put("api_key", "mw_dRyH_eq4Chi-VrpIcgevCqQCTmZr4");
-        map.put("api_secret", "udA5gopl1ZnbXc2zzsKKTmcj9o05dF36");
+        map.put("api_key", "Fx5CgCRg5fKcCRkO8ipVk0OwQtZYqx5F");
+        map.put("api_secret", "T5H8Zv0Of8nTyvItVa4nph");
         map.put("return_landmark", "0");
         map.put("return_attributes", "emotion");
         byteMap.put("image_file", buff);
