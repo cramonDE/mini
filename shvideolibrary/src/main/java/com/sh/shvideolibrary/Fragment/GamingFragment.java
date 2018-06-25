@@ -86,7 +86,7 @@ public class GamingFragment extends Fragment {
         //Set main activity
         main = (VideoInputActivity)getActivity();
 
-        init(30000, 500,7000, 5000, 5);
+        init(15000, 500,7000, 5000, 5);
 
         return view;
     }
@@ -166,6 +166,8 @@ public class GamingFragment extends Fragment {
 
             public void onFinish() {
                 updateGameCountDownText("\u2714");
+                main.musicService.playerStop();
+
 //                main.removeFragment(main.gamingFragment);
 //                main.addFragment(main.previewFragment);
                 main.replaceFragment(main.previewFragment);

@@ -12,7 +12,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Rect;
@@ -24,7 +23,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.Process;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -50,6 +48,8 @@ import com.tencent.tauth.UiError;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -431,12 +431,12 @@ public class VideoInputActivity extends Activity {
     }
 
     boolean recording = false;
-    View.OnClickListener stopCaptureFrame = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            mCamera.setPreviewCallback(null);
-        }
-    };
+//    View.OnClickListener stopCaptureFrame = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            mCamera.setPreviewCallback(null);
+//        }
+//    };
     public void stopRecord() {
         mediaRecorder.stop(); //停止
 //        stopChronometer();
@@ -615,43 +615,43 @@ public class VideoInputActivity extends Activity {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 ByteArrayOutputStream outputSteam = new ByteArrayOutputStream();
                 image.compressToJpeg(new Rect(0, 0, width, height),
-                        50, outputSteam);
+                        30, outputSteam);
                 try {
-                    Bitmap bmp = BitmapFactory.decodeByteArray(outputSteam.toByteArray(), 0, outputSteam.size());
-                    bmp = rotateMyBitmap(bmp);
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bmp.compress(Bitmap.CompressFormat.JPEG, 30, baos);
-                    if (true == isFirstPhoto) {
-                        isFirstPhoto = false;
-                        EmojiFaceComparer.faceDetect(baos.toByteArray(), 1);
-                        stopCaptureFrame();
+//                    Bitmap bmp = BitmapFactory.decodeByteArray(outputSteam.toByteArray(), 0, outputSteam.size());
+//                    bmp = rotateMyBitmap(bmp);
+                    // ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    // bmp.compress(Bitmap.CompressFormat.JPEG, 30, baos);
+                    // if (true == isFirstPhoto) {
+                    //     isFirstPhoto = false;
+                    //     EmojiFaceComparer.faceDetect(baos.toByteArray(), 1);
+                    //     stopCaptureFrame();
+                    // }
+                    byte[] jpegData = outputSteam.toByteArray();
+                    String pictureFilePath = getOutputPhoto();
+                    File pictureFile = new File(pictureFilePath);
+                    if (pictureFile == null){
+                        Log.d(TAG, "Error creating media file, check storage permissions: ");
+                        return;
                     }
-//                    byte[] jpegData = outputSteam.toByteArray();
-//                    String pictureFilePath = getOutputPhoto();
-//                    File pictureFile = new File(pictureFilePath);
-//                    if (pictureFile == null){
-//                        Log.d(TAG, "Error creating media file, check storage permissions: ");
-//                        return;
-//                    }
-//                    try {
-//                        FileOutputStream fos = new FileOutputStream(pictureFile);
+                    try {
+                        FileOutputStream fos = new FileOutputStream(pictureFile);
 //                        bmp.compress(Bitmap.CompressFormat.JPEG, 90, fos);
-//                        fos.write(jpegData);
-//                        fos.close();
-//                    } catch (FileNotFoundException e) {
-//                        Log.d(TAG, "File not found: " + e.getMessage());
-//                    } catch (IOException e) {
-//                        Log.d(TAG, "Error accessing file: " + e.getMessage());
-//                    }
-//                    if (true == isFirstPhoto) {
-//                        boolean result = EmojiFaceComparer.test(pictureFilePath, 1);
-//                        isFirstPhoto = false;
-//                        Log.d(TAG, "run: " + result);
-//                        if (true == result) {
-//                            Toast.makeText(getApplicationContext(), "识别成功", Toast.LENGTH_SHORT).show();
-//                        }
-////                        stopCaptureFrame();
-//                    }
+                        fos.write(jpegData);
+                        fos.close();
+                    } catch (FileNotFoundException e) {
+                        Log.d(TAG, "File not found: " + e.getMessage());
+                    } catch (IOException e) {
+                        Log.d(TAG, "Error accessing file: " + e.getMessage());
+                    }
+                    if (true == isFirstPhoto) {
+                        boolean result = EmojiFaceComparer.test(pictureFilePath, 1); // 表情包编号
+                        isFirstPhoto = false;
+                        Log.d(TAG, "run: " + result);
+                        if (true == result) {
+                            Toast.makeText(getApplicationContext(), "识别成功", Toast.LENGTH_SHORT).show();
+                        }
+                            stopCaptureFrame();
+                    }
                 } catch (Exception e) {
 
                     e.printStackTrace();
