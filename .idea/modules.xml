@@ -4,7 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ShVideoDemo-master.iml" filepath="$PROJECT_DIR$/ShVideoDemo-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/mini.iml" filepath="$PROJECT_DIR$/mini.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shvideolibrary/shvideolibrary.iml" filepath="$PROJECT_DIR$/shvideolibrary/shvideolibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/shvideolibrary/shvideolibrary.iml" filepath="$PROJECT_DIR$/shvideolibrary/shvideolibrary.iml" />
     </modules>
   </component>

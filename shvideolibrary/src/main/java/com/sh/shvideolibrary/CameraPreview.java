@@ -2,17 +2,21 @@ package com.sh.shvideolibrary;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Point;
 import android.hardware.Camera;
 import android.util.Log;
+import android.util.Size;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.io.IOException;
+import java.util.List;
 
 
 /** 摄像头预览界面控件 */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
+    private Camera.Size size;
     private SurfaceHolder mHolder;
     private Camera mCamera;
     private static final String TAG = "CameraPreview";
@@ -65,11 +69,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         // start preview with new settings
         try {
+
             mCamera.setPreviewDisplay(mHolder);
             mCamera.setDisplayOrientation(90);
             Camera.Parameters parameters=mCamera.getParameters();
-            parameters.set("orientation", "portrait");
-            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+            Camera.Size size = getBestPreviewSize(w, h, parameters);
+            parameters.setPreviewSize(size.width, size.height);
+//            parameters.setPreviewSize(480, 720);
             mCamera.setParameters(parameters);
             mCamera.startPreview();
 
@@ -108,6 +114,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
 
             Camera.Parameters parameters = mCamera.getParameters();
+
             parameters.setFlashMode(flashMode);
             mCamera.setParameters(parameters);
 
@@ -122,4 +129,28 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mCamera = camera;
 
     }
+    private Camera.Size getBestPreviewSize(int width, int height,
+                                           Camera.Parameters parameters) {
+        Camera.Size result = null;
+
+        for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
+//            if (size.width <= width && size.height <= height) {
+                Log.d(TAG, "getBestPreviewSize: " + size.height + ' ' + size.width);
+                if (result == null) {
+                    result = size;
+                } else {
+                    int resultArea = result.width * result.height;
+                    int newArea = size.width * size.height;
+
+                    if (newArea > resultArea) {
+                        result = size;
+                    }
+                }
+//            }
+        }
+        this.size = result;
+        return (result);
+    }
+
+
 }
