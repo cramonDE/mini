@@ -12,6 +12,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Rect;
@@ -107,6 +108,8 @@ public class VideoInputActivity extends Activity {
     public IUiListener mIUiListener;  // 登陆SDK完成的回调接口
     // need by 手q登陆-end
 
+    // 判断是否识别成功
+    private boolean detectSuccessful = false;
     public static void startActivityForResult(Activity activity, int requestCode,int quality) {
         Intent intent = new Intent(activity, VideoInputActivity.class);
         intent.putExtra("quality",quality);
@@ -120,6 +123,8 @@ public class VideoInputActivity extends Activity {
         setContentView(R.layout.activity_video_input);
         quality = getIntent().getIntExtra("quality",Q480);
         QMUIStatusBarHelper.translucent(this);
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
         mTencent = Tencent.createInstance(APP_ID, this.getApplicationContext());
 
@@ -234,6 +239,7 @@ public class VideoInputActivity extends Activity {
 //        });
     }
     public void startCaptureFrame() {
+        detectSuccessful = false;
         mCamera.setPreviewCallback(new Camera.PreviewCallback() {
             @Override
             public void onPreviewFrame(byte[] data, Camera camera) {
@@ -243,7 +249,6 @@ public class VideoInputActivity extends Activity {
                         size.height, null);
                 if (image != null) {
                     transformPhoto(image, size.width, size.height);
-//
                 }
             }
         });
@@ -253,6 +258,9 @@ public class VideoInputActivity extends Activity {
         Log.d(TAG, "stopCaptureFrame: stop");
         mCamera.setPreviewCallback(null);
         isFirstPhoto = true;
+        if (true == detectSuccessful) {
+            gamingFragment.addComboNum();
+        }
     }
 
 
@@ -617,13 +625,13 @@ public class VideoInputActivity extends Activity {
                 image.compressToJpeg(new Rect(0, 0, width, height),
                         30, outputSteam);
                 try {
-//                    Bitmap bmp = BitmapFactory.decodeByteArray(outputSteam.toByteArray(), 0, outputSteam.size());
-//                    bmp = rotateMyBitmap(bmp);
-                    // ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    // bmp.compress(Bitmap.CompressFormat.JPEG, 30, baos);
+                    Bitmap bmp = BitmapFactory.decodeByteArray(outputSteam.toByteArray(), 0, outputSteam.size());
+                    bmp = rotateMyBitmap(bmp);
+//                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                     bmp.compress(Bitmap.CompressFormat.JPEG, 30, baos);
                     // if (true == isFirstPhoto) {
                     //     isFirstPhoto = false;
-                    //     EmojiFaceComparer.faceDetect(baos.toByteArray(), 1);
+//                         EmojiFaceComparer.faceDetect(baos.toByteArray(), 1);
                     //     stopCaptureFrame();
                     // }
                     byte[] jpegData = outputSteam.toByteArray();
@@ -635,7 +643,7 @@ public class VideoInputActivity extends Activity {
                     }
                     try {
                         FileOutputStream fos = new FileOutputStream(pictureFile);
-//                        bmp.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                        bmp.compress(Bitmap.CompressFormat.JPEG, 90, fos);
                         fos.write(jpegData);
                         fos.close();
                     } catch (FileNotFoundException e) {
@@ -648,9 +656,9 @@ public class VideoInputActivity extends Activity {
                         isFirstPhoto = false;
                         Log.d(TAG, "run: " + result);
                         if (true == result) {
-                            Toast.makeText(getApplicationContext(), "识别成功", Toast.LENGTH_SHORT).show();
+                            detectSuccessful = true;
+//                            stopCaptureFrame();
                         }
-                            stopCaptureFrame();
                     }
                 } catch (Exception e) {
 

@@ -84,8 +84,8 @@ class API_port {
         emoji_code = eCode;
         File file = new File(file_path);
         byte[] buff = getBytesFromFile(file);
-        map.put("api_key", "Fx5CgCRg5fKcCRkO8ipVk0OwQtZYqx5F");
-        map.put("api_secret", "T5H8Zv0Of8nTyvItVa4nph");
+        map.put("api_key", "J4ehDyzUD4FB8GC11jh45e2s7NZyTcWE");
+        map.put("api_secret", "IKSLsqT1Ps3gc49g1okBRBxAgDjgOZkQ");
         map.put("return_landmark", "0");
         map.put("return_attributes", "emotion");
         byteMap.put("image_file", buff);

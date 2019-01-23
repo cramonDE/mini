@@ -75,7 +75,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Camera.Parameters parameters=mCamera.getParameters();
             Camera.Size size = getBestPreviewSize(w, h, parameters);
             parameters.setPreviewSize(size.width, size.height);
-//            parameters.setPreviewSize(480, 720);
+//            parameters.setPreviewSize(432, 768);
+
             mCamera.setParameters(parameters);
             mCamera.startPreview();
 
@@ -134,7 +135,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Camera.Size result = null;
 
         for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
-//            if (size.width <= width && size.height <= height) {
+            if (size.width <= 768 && size.height <= 432) {
                 Log.d(TAG, "getBestPreviewSize: " + size.height + ' ' + size.width);
                 if (result == null) {
                     result = size;
@@ -146,7 +147,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                         result = size;
                     }
                 }
-//            }
+            }
         }
         this.size = result;
         return (result);

@@ -86,7 +86,7 @@ public class GamingFragment extends Fragment {
         //Set main activity
         main = (VideoInputActivity)getActivity();
 
-        init(15000, 500,7000, 5000, 5);
+        init(15000, 500,5000, 2000, 5);
 
         return view;
     }
@@ -167,7 +167,7 @@ public class GamingFragment extends Fragment {
             public void onFinish() {
                 updateGameCountDownText("\u2714");
                 main.musicService.playerStop();
-
+                comboNum = 0;
 //                main.removeFragment(main.gamingFragment);
 //                main.addFragment(main.previewFragment);
                 main.replaceFragment(main.previewFragment);
@@ -182,7 +182,6 @@ public class GamingFragment extends Fragment {
                 int i = (int)Math.floor(Math.random() * 4.0);
                 int j = (int)Math.floor(Math.random() * (float)positionNum);
                 dropEmoji(i,j);
-                addComboNum();
             }
 
             @Override
@@ -204,6 +203,8 @@ public class GamingFragment extends Fragment {
         progress.setVisibility(View.VISIBLE);
         countdown.setVisibility(View.INVISIBLE);
         backBtn.setVisibility(View.INVISIBLE);
+        combo.setVisibility(View.VISIBLE);
+        addComboNum();
 
         //游戏倒计时开始
         gameTimer.start();
@@ -249,12 +250,7 @@ public class GamingFragment extends Fragment {
      * 增加combo数
      */
     public void addComboNum(){
-
         combo.setText(this.comboNum++ +" Combo");
-
-        if(this.comboNum ==1){
-            combo.setVisibility(View.VISIBLE);
-        }
     }
 
     /**
