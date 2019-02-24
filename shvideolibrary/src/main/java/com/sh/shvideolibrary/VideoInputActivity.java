@@ -90,8 +90,6 @@ public class VideoInputActivity extends Activity {
     ImageView buttonFlash ;
     Chronometer  textChrono;
     ImageView chronoRecordingImage;
-    ImageView startMusicBtn;
-    ImageView stopMusicBtn;
 
     public LoginFragment loginFragment;
     public ReadyFragment readyFragment;
@@ -107,7 +105,7 @@ public class VideoInputActivity extends Activity {
     public Tencent mTencent;  // 登陆SDK使用的接口
     public IUiListener mIUiListener;  // 登陆SDK完成的回调接口
     // need by 手q登陆-end
-
+    public int currentEmojiIndex = 0;
     // 判断是否识别成功
     private boolean detectSuccessful = false;
     public static void startActivityForResult(Activity activity, int requestCode,int quality) {
@@ -652,7 +650,7 @@ public class VideoInputActivity extends Activity {
                         Log.d(TAG, "Error accessing file: " + e.getMessage());
                     }
                     if (true == isFirstPhoto) {
-                        boolean result = EmojiFaceComparer.test(pictureFilePath, 1); // 表情包编号
+                        boolean result = EmojiFaceComparer.test(pictureFilePath, currentEmojiIndex); // 表情包编号
                         isFirstPhoto = false;
                         Log.d(TAG, "run: " + result);
                         if (true == result) {

@@ -259,6 +259,8 @@ public class GamingFragment extends Fragment {
      * @param positionIndex 位置编号
      */
     public void dropEmoji(int emojiIndex, int positionIndex){
+        main.currentEmojiIndex = positionIndex;
+        Log.d(TAG, "dropEmoji: " + positionIndex);
         // get emoji
         ImageView image = createEmoji(emojiIndex);
         // set horizontal position
