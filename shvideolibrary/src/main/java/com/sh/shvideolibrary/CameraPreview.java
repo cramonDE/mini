@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.hardware.Camera;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
 import android.view.SurfaceHolder;
@@ -21,6 +22,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private Camera mCamera;
     private static final String TAG = "CameraPreview";
     private String flashMode = Camera.Parameters.FLASH_MODE_OFF;
+    VideoInputActivity main;
     public CameraPreview(Context context, Camera camera) {
         super(context);
         mCamera = camera;
@@ -135,8 +137,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Camera.Size result = null;
 
         for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
-            if (size.width <= 768 && size.height <= 432) {
-                Log.d(TAG, "getBestPreviewSize: " + size.height + ' ' + size.width);
+            Log.d(TAG, "getBestPreviewSize: " + size.height + ' ' + size.width);
+            if (size.width <= 864 && size.height <= 480) {
                 if (result == null) {
                     result = size;
                 } else {
@@ -150,6 +152,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
         }
         this.size = result;
+        Log.d(TAG, "getBestPreviewSizeFinal: " + this.size.width + ' ' + this.size.height);
         return (result);
     }
 

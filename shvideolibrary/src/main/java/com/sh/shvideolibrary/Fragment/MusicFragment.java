@@ -123,6 +123,8 @@ public class MusicFragment extends Fragment {
         main.readyFragment.musicChosen = tag;
         String name = getResources().getResourceEntryName(v.getId());
         main.gamingFragment.musicIndex = name.charAt(name.length()-1) - '0';
+        Log.d(TAG, "chooseMusic: " + main.gamingFragment.musicIndex);
+        main.musicService.setMusicUrl(main.gamingFragment.musicIndex);
         main.replaceFragment(main.readyFragment);
         main.getFragmentManager().beginTransaction().detach(main.readyFragment).attach(main.readyFragment).commit();
 

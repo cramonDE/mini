@@ -39,7 +39,7 @@ public class GamingFragment extends Fragment {
 
 
 
-    final long countdownTime = 4500;        // 倒数计时总时长
+    final long countdownTime = 3500;        // 倒数计时总时长
     final long countdownInterval = 1000;    // 倒数计时间隔时间
     private long gameTime,                  // 游戏总时长
             updateGameTimerInterval,        // 倒数更新间隔
@@ -138,9 +138,8 @@ public class GamingFragment extends Fragment {
         countDownTimer = new CountDownTimer(countdownTime, countdownInterval) {
 
             public void onTick(long millisUntilFinished) {
-                updateCountDown(""+(millisUntilFinished/1000-1));
-
-                if(millisUntilFinished/1000==1){
+                updateCountDown(""+(millisUntilFinished/1000));
+                if(millisUntilFinished/1000==0){
                     countdown.setText("Go!");
                 }
             }

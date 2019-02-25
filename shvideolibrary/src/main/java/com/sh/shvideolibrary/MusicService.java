@@ -1,14 +1,18 @@
 package com.sh.shvideolibrary;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Process;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
+import java.io.IOException;
 
 import static android.media.AudioManager.STREAM_MUSIC;
 
@@ -20,24 +24,14 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private MediaPlayer mediaPlayer;
     //音乐是否准备好
     private boolean isPrepared = false;
-    private String musicUrl = "";
-    public void setMusicUrl(String url) {
-        musicUrl = url;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-                mediaPlayer.reset();
-                try {
-                    mediaPlayer.setDataSource("http://123.207.123.157/audios/" + musicUrl + ".mp3");
-                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    mediaPlayer.prepare();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.run();
+    public void setMusicUrl(int index) {
+        try {
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(Config.httpUrl +"/static/song" + index +".mp3");
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -45,12 +39,14 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         super.onCreate();
         Log.i("yxs","create");
         //初始化播放器,这些操作建议放在onStartCommand方法中
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.bie);
+//        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.bie);
+        mediaPlayer = new MediaPlayer();
         //设置音乐循环播放
+        setMusicUrl(1);
         mediaPlayer.setLooping(true);
         ////监听音乐是否准备好,需要实现onPrepared方法
         mediaPlayer.setOnPreparedListener(MusicService.this);
-//        setMusicUrl(getString(R.string.song1));
+
     }
 
     @Override
@@ -63,8 +59,6 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
      * 播放音乐
      */
     public void playerStart(int index){
-
-
         //判断是否准备好
         if(isPrepared) {
             //判断播放器是否为null，和是否正在播放
