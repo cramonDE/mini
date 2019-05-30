@@ -179,6 +179,7 @@ class API_port {
      　　*/
     public static boolean getSimilarity() {
         double totalDifference = 0.0;
+        double majorDifference = 0.0;
         Iterator iter = user_emotion_map.keySet().iterator();
         while (iter.hasNext()) {
             Object key = iter.next();
@@ -190,9 +191,14 @@ class API_port {
                 case 4: standard = Double.parseDouble(emoji4_emotion_map.get(key)); break;
                 default: return false;
             }
-            double diff = Double.parseDouble(user_emotion_map.get(key)) - standard;
-            totalDifference += Math.pow(diff,2); //差平方求和
+            if (key == "happiness") {
+                majorDifference = Double.parseDouble(user_emotion_map.get(key)) - standard;
+            } else {
+                Double diff = Double.parseDouble(user_emotion_map.get(key)) - standard;
+                totalDifference += Math.pow(diff,2); //差平方求和
+            }
         }
+        totalDifference = 0.5 * totalDifference + 0.5 * majorDifference;
         totalDifference = Math.sqrt(totalDifference); //根号
         Log.d(TAG, "getSimilarity: "+ Double.toString(totalDifference));
         if (totalDifference < 90) { return true; }

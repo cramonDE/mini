@@ -650,7 +650,8 @@ public class VideoInputActivity extends Activity {
                         Log.d(TAG, "Error accessing file: " + e.getMessage());
                     }
                     if (true == isFirstPhoto) {
-                        boolean result = EmojiFaceComparer.test(pictureFilePath, currentEmojiIndex); // 表情包编号
+                        // will modify [currentEmojiIndex]
+                        boolean result = EmojiFaceComparer.test(pictureFilePath, 1); // 表情包编号
                         isFirstPhoto = false;
                         Log.d(TAG, "run: " + result);
                         if (true == result) {
